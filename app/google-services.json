@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "195996042158",
+    "project_id": "inshortsnewsapk",
+    "storage_bucket": "inshortsnewsapk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195996042158:android:b248bac9b0de7687bafe3f",
+        "android_client_info": {
+          "package_name": "com.inshortsapk.inshorts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195996042158-sotl2q949555anga2cv1d4nmf7i1c891.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEFhx4Con9q1U8XygSSgp2iqHDVvIZfTs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195996042158-sotl2q949555anga2cv1d4nmf7i1c891.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
