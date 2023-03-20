@@ -40,6 +40,16 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.verticalViewPager=verticalViewPager;
         mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+    public ViewPagerAdapter(Context context, ArrayList<SliderItems> sliderItems, ArrayList<String> titles, ArrayList<String> desc, ArrayList<String> images, ArrayList<String> newslinks, ArrayList<String> heads) {
+        this.context = context;
+        this.sliderItems = sliderItems;
+        this.titles = titles;
+        this.desc = desc;
+        this.images = images;
+        this.newslinks = newslinks;
+        this.heads = heads;
+        mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
     public ViewPagerAdapter(Context context, List<SliderItems> sliderItems) {
         this.context=context;
         this.sliderItems = sliderItems;
@@ -48,6 +58,13 @@ public class ViewPagerAdapter extends PagerAdapter {
         mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+
+    public ViewPagerAdapter(Context context, ArrayList<SliderItems> sliderItems, ArrayList<String> titles) {
+        this.context = context;
+        this.sliderItems = sliderItems;
+        this.titles = titles;
+        mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
 
     @Override
@@ -73,11 +90,47 @@ public class ViewPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        View itemView=mLayoutInflater.inflate(R.layout.item_container,container,false);
-        ImageView imageView=itemView.findViewById(R.id.imageView);
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-        //we will set image to imageview inside items container
+        View itemView = mLayoutInflater.inflate(R.layout.item_container, container, false);
+        ImageView imageView = itemView.findViewById(R.id.imageView);
+
+        // Set image to imageview inside items container
         imageView.setImageResource(sliderItems.get(position).getImage());
+
+        TextView title = itemView.findViewById(R.id.headline);
+        TextView desctv = itemView.findViewById(R.id.desc);
+        TextView head = itemView.findViewById(R.id.head);
+
+        // Set data from array list to textView
+        title.setText(titles.get(position));
+        desctv.setText(desc.get(position));
+        head.setText(heads.get(position));
+
+        Glide.with(context)
+                .load(images.get(position))
+                .centerCrop()
+                .into(imageView);
+
+        container.addView(itemView);
+        return itemView;
+//        View itemView=mLayoutInflater.inflate(R.layout.item_container,container,false);
+//        ImageView imageView=itemView.findViewById(R.id.imageView);
+//        TextView title=itemView.findViewById(R.id.headline);
+//
+//        // Set the data to the views
+//        imageView.setImageResource(sliderItems.get(position).getImage());
+//        title.setText(titles.get(position));
+//
+//        container.addView(itemView);
+//        return itemView;
+
+
+//        View itemView=mLayoutInflater.inflate(R.layout.item_container,container,false);
+//        ImageView imageView=itemView.findViewById(R.id.imageView);
+//
+//        //we will set image to imageview inside items container
+//        imageView.setImageResource(sliderItems.get(position).getImage());
 
 //        ImageView imageView2=itemView.findViewById(R.id.imageView2);
 //        TextView title=itemView.findViewById(R.id.headline);
@@ -99,9 +152,9 @@ public class ViewPagerAdapter extends PagerAdapter {
 //                .centerCrop()
 //                .override(12,12)
 //                .into(imageView2);
-
-      container.addView(itemView);
-        return itemView;
+//
+//      container.addView(itemView);
+//        return itemView;
 
 
     }

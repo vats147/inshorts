@@ -68,8 +68,8 @@ public class VeticalViewPager extends ViewPager {
                 page.setScaleY(scale);
             }
             else{
-                    //[1,+infinty]
-                    page.setAlpha(0);
+                //[1,+infinty]
+                page.setAlpha(0);
             }
 
 
@@ -78,14 +78,14 @@ public class VeticalViewPager extends ViewPager {
 
     private MotionEvent swapXYCordinates(MotionEvent event)
     {
-            //now we will swap x and y coordinates using this,.....
-            float width=getWidth();
-            float height=getHeight();
-            float newX=(event.getY()/height)*width;
-            float newY=(event.getX()/width)*height;
+        //now we will swap x and y coordinates using this,.....
+        float width=getWidth();
+        float height=getHeight();
+        float newX=(event.getY()/height)*width;
+        float newY=(event.getX()/width)*height;
 
 
-            event.setLocation(newX,newY);
+        event.setLocation(newX,newY);
         return event;
     }
     public boolean onInterceptTouchEvent(MotionEvent ev)
