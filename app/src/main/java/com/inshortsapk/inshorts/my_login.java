@@ -1,13 +1,12 @@
 package com.inshortsapk.inshorts;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +30,7 @@ public class my_login extends AppCompatActivity {
         gsc= GoogleSignIn.getClient(this,gso);
 
         GoogleSignInAccount acct=GoogleSignIn.getLastSignedInAccount(this);
+
         if(acct!=null)
         {
 
