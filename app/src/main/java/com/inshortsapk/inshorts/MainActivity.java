@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                             ArrayList<String> images=new ArrayList<>();
                             ArrayList<String> newslinks=new ArrayList<>();
                             ArrayList<String> heads=new ArrayList<>();
+
+                            //add sharebutton as a list
                             ArrayList<String> BTNSHARE=new ArrayList<>();
 
                             for (int i = 0; i < array.length(); i++) {
