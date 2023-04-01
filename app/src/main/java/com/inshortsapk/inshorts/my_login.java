@@ -1,7 +1,9 @@
 package com.inshortsapk.inshorts;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -41,7 +43,7 @@ public class my_login extends AppCompatActivity {
             startActivity(intent);
         }
         btnLogin=findViewById(R.id.btnLogin);
-
+        //btnLogin.setBackgroundColor(Color.rgb(29,119,177));
         //(account);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +81,8 @@ public class my_login extends AppCompatActivity {
                 startActivity(intent);
             } catch (ApiException e) {
 
-                //not loged in
-                Toast.makeText(this, "Not Logged In", Toast.LENGTH_SHORT).show();
+                // not logged in, print the actual error message for debugging purposes
+                Toast.makeText(this, "Not Logged In: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }

@@ -1,10 +1,14 @@
 package com.inshortsapk.inshorts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -13,6 +17,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 
 import org.json.JSONArray;
@@ -27,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     //now create list of type slider item
     List<SliderItems> sliderItems=new ArrayList<>();
-
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
     ArrayList<String> titles=new ArrayList<>();
     ArrayList<String> desc=new ArrayList<>();
     ArrayList<String> images=new ArrayList<>();
@@ -41,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc= GoogleSignIn.getClient(this,gso);
 
         final VeticalViewPager verticalViewPager=(VeticalViewPager) findViewById(R.id.verticalViewPager);
 
@@ -163,10 +178,58 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+        private MenuItem username;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.option_menu,menu);
+        username = menu.findItem(R.id.username);
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
 
-    private void getData() {
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+
+        if (acct != null) {
+
+            String personName = acct.getDisplayName();
+            //String personEmail=acct.getEmail();
+            username.setTitle(personName);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.username:
+
+                break;
+
+            case R.id.logout:
+                signOut();
+                break;
+        }
+        return true;
+    }
+    public void signOut(){
+        gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete( Task<Void> task) {
+                finish();
+                Intent intent=new Intent(MainActivity.this,my_login.class);
+
+                startActivity(intent);
+            }
+        });
+
+    }
 
 
     }
-}
