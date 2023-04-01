@@ -1,6 +1,9 @@
 package com.inshortsapk.inshorts;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
+import java.security.AccessControlContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,6 +106,18 @@ public class ViewPagerAdapter extends PagerAdapter {
         TextView title = itemView.findViewById(R.id.headline);
         TextView desctv = itemView.findViewById(R.id.desc);
         TextView head = itemView.findViewById(R.id.head);
+        FloatingActionButton btnshare = itemView.findViewById(R.id.floatingActionButton);
+
+        btnshare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Link");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.example.com");
+                context.startActivity(Intent.createChooser(shareIntent, "Share link via"));
+            }
+        });
 
         // Set data from array list to textView
         title.setText(titles.get(position));
