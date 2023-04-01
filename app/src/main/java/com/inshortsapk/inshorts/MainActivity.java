@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                             ArrayList<String> images=new ArrayList<>();
                             ArrayList<String> newslinks=new ArrayList<>();
                             ArrayList<String> heads=new ArrayList<>();
+                            ArrayList<String> BTNSHARE=new ArrayList<>();
 
                             for (int i = 0; i < array.length(); i++) {
                                 Log.e("loop","inside = "+i);
@@ -142,11 +143,13 @@ public class MainActivity extends AppCompatActivity {
                                 images.add(singleObject.getString("thumbnailUrl"));
                                 newslinks.add(singleObject.getString("url"));
                                 heads.add(singleObject.getString("title"));
+                                BTNSHARE.add(singleObject.getString("url"));
+
                                 sliderItems.add(new SliderItems(R.drawable.ic_launcher_background));
                             }
 
                             //  ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems, (ArrayList<String>) titles);
-                            ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems,  (ArrayList<String>)titles, desc, images, newslinks, heads);
+                            ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems,  (ArrayList<String>)titles, desc, images, newslinks, heads,BTNSHARE);
                             verticalViewPager.setAdapter(adapter);
 
                         } catch (JSONException e) {
@@ -213,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.logout:
+
                 signOut();
                 break;
         }

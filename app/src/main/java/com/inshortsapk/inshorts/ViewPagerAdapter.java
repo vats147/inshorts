@@ -1,7 +1,5 @@
 package com.inshortsapk.inshorts;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -19,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
-import java.security.AccessControlContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +29,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     ArrayList<String> images;
     ArrayList<String> newslinks;
     ArrayList<String> heads;
+    ArrayList<String> BTNSHARE;
     VeticalViewPager verticalViewPager;
 
 
@@ -53,6 +51,17 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.images = images;
         this.newslinks = newslinks;
         this.heads = heads;
+        mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+    public ViewPagerAdapter(Context context, ArrayList<SliderItems> sliderItems, ArrayList<String> titles, ArrayList<String> desc, ArrayList<String> images, ArrayList<String> newslinks, ArrayList<String> heads,ArrayList<String> BTNSHARE) {
+        this.context = context;
+        this.sliderItems = sliderItems;
+        this.titles = titles;
+        this.desc = desc;
+        this.images = images;
+        this.newslinks = newslinks;
+        this.heads = heads;
+        this.BTNSHARE=BTNSHARE;
         mLayoutInflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     public ViewPagerAdapter(Context context, List<SliderItems> sliderItems) {
@@ -114,7 +123,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing Link");
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.example.com");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, BTNSHARE.get(position));
                 context.startActivity(Intent.createChooser(shareIntent, "Share link via"));
             }
         });
