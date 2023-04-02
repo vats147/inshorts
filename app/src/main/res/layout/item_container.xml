@@ -47,17 +47,17 @@
                     android:text="Description "
                     />
 
-            <TextView
-                android:id="@+id/swipetext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:padding="2dp"
-                android:text="Swipe Left to Read More"
-                android:textColor="@color/purple_700"
+<!--            <TextView-->
+<!--                android:id="@+id/swipetext"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="20dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:padding="2dp"-->
+<!--                android:text="Swipe Left to Read More"-->
+<!--                android:textColor="@color/purple_700"-->
 
-                />
+<!--                />-->
 
 
         </LinearLayout>
@@ -78,7 +78,8 @@
             android:layout_height="70dp"
             android:layout_gravity="bottom"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/ic_launcher_background"
+            android:visibility="invisible"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,6 +91,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="35dp"
+            android:visibility="invisible"
             />
         <TextView
             android:layout_width="match_parent"
@@ -103,6 +105,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="Tap here to read more"
+            android:visibility="invisible"
             />
 
     </androidx.cardview.widget.CardView>

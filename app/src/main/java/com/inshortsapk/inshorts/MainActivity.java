@@ -11,11 +11,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,7 +31,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> images=new ArrayList<>();
     ArrayList<String> newslinks=new ArrayList<>();
     ArrayList<String> heads=new ArrayList<>();
-
+    ArrayList<String> BTNSHARE=new ArrayList<>();
 
     DatabaseReference mRef;
 
@@ -59,129 +62,94 @@ public class MainActivity extends AppCompatActivity {
 
         final VeticalViewPager verticalViewPager=(VeticalViewPager) findViewById(R.id.verticalViewPager);
 
-//        mRef= FirebaseDatabase.getInstance().getReference("news");
-//        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot ds:snapshot.getChildren())
-//                {
-//                    //add data to array list
-//                    titles.add(ds.child("title").getValue(String.class));
-//                    desc.add(ds.child("desc").getValue(String.class));
-//                    heads.add(ds.child("head").getValue(String.class));
-//                    images.add(ds.child("imagelink").getValue(String.class));
-//                    newslinks.add(ds.child("newslink").getValue(String.class));
-//
-//                }
-//                for (int i=0;i<images.size();i++)
-//                {
-//                        //here we add slider items with the images that are store in images array list...
-//                        sliderItems.add(new SliderItems(images.get(i)));
-//
-//                        //change int to string becuase now we are able to retrive image link and save to array list
-//
-////                    verticalViewPager.setAdapter(new ViewPagerAdapter(MainActivity.this,sliderItems),titles,desc,images,newslinks,heads,verticalViewPager);
-////
-////                    //now add all array list in adapter
-//                }
-//                                    verticalViewPager.setAdapter(new ViewPagerAdapter(MainActivity.this,sliderItems,titles,desc,newslinks,heads,verticalViewPager));
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
-        //add some image in sliderItems and pass this list to our adapter...
-
-
-// sliderItems.add(new SliderItems(R.drawable.ic_launcher_background));
-//        sliderItems.add(new SliderItems(R.drawable.ic_launcher_background));
-//        sliderItems.add(new SliderItems(R.drawable.ic_launcher_background));
-//
-        //  verticalViewPager.setAdapter(new ViewPagerAdapter(MainActivity.this,sliderItems));
 
         //api calling
 
 
 
-        String url="https://jsonplaceholder.typicode.com/photos/";
+       fetchData();
 
-        // GET https://newsapi.org/v2/top-headlines?country=us&apiKey=dd106b6e9235434a9bda0dd973a445de
-       // String url="https://newsapi.org/v2/top-headlines?country=in&apiKey=dd106b6e9235434a9bda0dd973a445de";
+
+    }
+
+    private void fetchData() {
+        final VeticalViewPager verticalViewPager = (VeticalViewPager) findViewById(R.id.verticalViewPager);
+        // Define API url
+        String url="https://newsapi.org/v2/top-headlines?country=in&apiKey=dd106b6e9235434a9bda0dd973a445de";
+        //String url = "https://gnews.io/api/v4/search?q=example&lang=en&country=us&max=10&apikey=e1a303a726b13fbc8ead06c221362838";
+
+        // Initialize request queue
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-
+        // Make a request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        Log.e("loop","inside = ");
+                    public void onResponse(JSONObject response) {
+                        // Parse JSON response
                         try {
+                            JSONArray newsJsonArray = response.getJSONArray("articles");
 
-                            JSONArray array = new JSONArray(response);
-                            Log.e("loop","Inside try= ");
-                            List<String> titles = new ArrayList<>();
+                            for (int i = 0; i < newsJsonArray.length(); i++) {
+                                JSONObject newsJsonObject = newsJsonArray.getJSONObject(i);
 
-                            ArrayList<String> desc=new ArrayList<>();
-                            ArrayList<String> images=new ArrayList<>();
-                            ArrayList<String> newslinks=new ArrayList<>();
-                            ArrayList<String> heads=new ArrayList<>();
+                                String title = newsJsonObject.getString("title");
+                                String description = newsJsonObject.getString("description");
+                                String imageUrl = newsJsonObject.getString("urlToImage");
+                                String newsUrl = newsJsonObject.getString("url");
 
-                            //add sharebutton as a list
-                            ArrayList<String> BTNSHARE=new ArrayList<>();
 
-                            for (int i = 0; i < array.length(); i++) {
-                                Log.e("loop","inside = "+i);
-                                JSONObject singleObject = array.getJSONObject(i);
 
-                                String title = singleObject.getString("title");
+
                                 titles.add(title);
-
-                                desc.add(singleObject.getString("url"));
-                                images.add(singleObject.getString("thumbnailUrl"));
-                                newslinks.add(singleObject.getString("url"));
-                                heads.add(singleObject.getString("title"));
-                                BTNSHARE.add(singleObject.getString("url"));
-
+                                desc.add(description);
+                                images.add(imageUrl);
+                                newslinks.add(newsUrl);
+                                heads.add(title);
+                                BTNSHARE.add(newsUrl);
+                                // newsArray.add(news);
                                 sliderItems.add(new SliderItems(R.drawable.ic_launcher_background));
                             }
 
-                            //  ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems, (ArrayList<String>) titles);
-                            ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems,  (ArrayList<String>)titles, desc, images, newslinks, heads,BTNSHARE);
+                            ViewPagerAdapter adapter = new ViewPagerAdapter((Context) MainActivity.this, (ArrayList<SliderItems>) sliderItems, (ArrayList<String>) titles, desc, images, newslinks, heads,BTNSHARE);
                             verticalViewPager.setAdapter(adapter);
 
+                            // Debugging logs
+                            Log.d("Titles", titles.toString());
+                            Log.d("Descriptions", desc.toString());
+                            Log.d("Images", images.toString());
+                            Log.d("NewsLinks", newslinks.toString());
+                            Log.d("Heads", heads.toString());
+
+                            // Do something with the parsed data
+                            // ...
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            //Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                            Log.e("api","onError messge"+e.toString());
+                            Toast.makeText(MainActivity.this, "Error parsing JSON", Toast.LENGTH_SHORT).show();
                         }
-                        //Here, we are passing the titles list as a parameter to the ViewPagerAdapter constructor, and then using it in the instantiateItem() method to set the text of the titleTextView view.
-
-
-
-
-
-
-
-                        //  textView.setText("Response is: " + response.substring(0,500));
                     }
-                }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(MainActivity.this, "Error fetching data", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("User-Agent", "Mozilla/5.0");
+                return headers;
             }
-        });
+        };
 
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-
+        // Add request to queue
+        queue.add(jsonObjectRequest);
     }
         private MenuItem username;
     @Override
