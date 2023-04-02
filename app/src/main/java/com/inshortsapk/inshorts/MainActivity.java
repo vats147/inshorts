@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +20,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,12 +51,17 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> heads=new ArrayList<>();
     ArrayList<String> BTNSHARE=new ArrayList<>();
 
-    DatabaseReference mRef;
+    //DatabaseReference mRef;
+    ImageView loadingGif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loadingGif=findViewById(R.id.imageView4);
+        Glide.with(this).asGif().load(R.drawable.loading).into(loadingGif);
+        loadingGif.setVisibility(View.VISIBLE);
+
 
 
         gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
 
        fetchData();
+
 
 
     }
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        loadingGif.setVisibility(View.INVISIBLE);
                         // Parse JSON response
                         try {
                             JSONArray newsJsonArray = response.getJSONArray("articles");
